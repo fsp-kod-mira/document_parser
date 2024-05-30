@@ -16,7 +16,7 @@ def receive_chunks(file_url):
     responses = stub.ExtractTextFromDocument(request)
     
     for response in responses:
-        chunk = response#.file_content#.decode()
+        chunk = response.file_content.decode()
         print(chunk)
 
 if __name__ == '__main__':
