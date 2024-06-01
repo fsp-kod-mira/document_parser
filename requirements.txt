@@ -1,0 +1,8 @@
+PyMuPDF
+python-docx
+striprtf
+docx2txt
+grpcio
+grpcio-tools
+futures
+requests
