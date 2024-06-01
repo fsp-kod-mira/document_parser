@@ -10,7 +10,7 @@ import docx2txt
 from document_parsers import *
 import os
 
-grpc_port = '[::]:50051'
+grpc_port = os.environ.get('GRPC_IPPORT') or '0.0.0.0:50051'
 
 class DocumentServicer(document_pb2_grpc.DocumentServicer):
     def ExtractTextFromDocument(self, request, context):
