@@ -35,19 +35,43 @@ def serve():
 
 
 
+import grpc
+import object_storage_pb2
+import object_storage_pb2_grpc
+
+
+
+def download_file(file_name, dest):
+    channel = grpc.insecure_channel('10.244.0.2:5250')
+    stub = object_storage_pb2_grpc.ObjectStorageStub(channel)
+    
+    request = object_storage_pb2.GetRequest(fileName=file_name)    
+    
+    with open(dest, 'wb') as f:
+        response = stub.Get(request)
+        for file_chunk in response:
+            f.write(file_chunk.chunk)
+
+
+
+
 def controller(file_url):
-    response = requests.get(file_url)
+    
     file_extension = os.path.splitext(file_url)[-1]
 
-    if response.status_code == 200:
+    if True == True:
         try:
             os.mkdir("downloads")
         except: 
             pass
-        
+
         temp_filename = "downloads/" + generate_random_name(file_extension)
-        with open(temp_filename, 'wb') as f:
-            f.write(response.content)
+        #with open(temp_filename, 'wb') as f:
+        #    f.write(response.content)
+        download_file(file_url, temp_filename)
+        
+        print(f"path:::::::::::: {temp_filename}")
+        print(f"exten::::::::::: {file_extension}")
 
         extracted_text = ""
         if ".pdf" in file_extension:
@@ -66,4 +90,5 @@ def controller(file_url):
 if __name__ == '__main__':
     print(f"Run server on {grpc_port}")
     serve()
+    #controller("d45a4a63-9d08-4526-8fb5-f671c2e9c7dc.rtf")
     
